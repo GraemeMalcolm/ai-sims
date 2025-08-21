@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const size = Number(sizeEl.value);
     const bedrooms = getBedrooms();
 
+    // This code simulates a machine learning model to predict the monthly rental
     let multiplier = 1;
     if(postal === '0002') multiplier = 1.2;
     if(postal === '0003') multiplier = 1.5;
@@ -35,4 +36,95 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     resultEl.textContent = `Estimated monthly rent: ${formatUSD(rent)}`;
   });
+
+  // Added: fetch and display CSV sample data when link is clicked
+  const viewDataLink = document.getElementById('view-data');
+  const dataContainer = document.getElementById('data-container');
+
+  function parseCSV(text){
+    const rows = [];
+    let cur = '';
+    let row = [];
+    let inQuotes = false;
+
+    for(let i = 0; i < text.length; i++){
+      const ch = text[i];
+      if(inQuotes){
+        if(ch === '"'){
+          if(text[i+1] === '"'){
+            cur += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          cur += ch;
+        }
+      } else {
+        if(ch === '"'){
+          inQuotes = true;
+        } else if(ch === ','){
+          row.push(cur);
+          cur = '';
+        } else if(ch === '\r'){
+          continue;
+        } else if(ch === '\n'){
+          row.push(cur);
+          rows.push(row);
+          row = [];
+          cur = '';
+        } else {
+          cur += ch;
+        }
+      }
+    }
+
+    if(cur !== '' || row.length){
+      row.push(cur);
+      rows.push(row);
+    }
+
+    return rows.filter(r => !(r.length === 1 && r[0] === ''));
+  }
+
+  function renderTable(rows){
+    if(!rows || rows.length === 0){
+      dataContainer.innerHTML = '<div class="muted">No data found.</div>';
+      dataContainer.hidden = false;
+      return;
+    }
+
+    const headers = rows[0];
+    let html = '<div class="table-wrap"><table class="data-table"><thead><tr>';
+    for(const h of headers){ html += `<th>${h}</th>`; }
+    html += '</tr></thead><tbody>';
+
+    for(let i = 1; i < rows.length; i++){
+      const cols = rows[i];
+      html += '<tr>';
+      for(const c of cols){ html += `<td>${c}</td>`; }
+      html += '</tr>';
+    }
+
+    html += '</tbody></table></div>';
+    dataContainer.innerHTML = html;
+    dataContainer.hidden = false;
+  }
+
+  if(viewDataLink){
+    viewDataLink.addEventListener('click', (e)=>{
+      e.preventDefault();
+      fetch('data.csv')
+        .then(res => { if(!res.ok) throw new Error('Network response was not ok'); return res.text(); })
+        .then(text => {
+          const rows = parseCSV(text);
+          renderTable(rows);
+        })
+        .catch(err => {
+          dataContainer.innerHTML = `<div class="muted">Unable to load data: ${err.message}</div>`;
+          dataContainer.hidden = false;
+        });
+    });
+  }
+
 });
