@@ -4,11 +4,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const input = document.getElementById('chat-input');
   const sendBtn = document.getElementById('send-btn');
 
+  // Samples: buttons that populate the input and add a pending user message (not submitted)
+  const sampleBtns = document.querySelectorAll('.sample-btn');
+  let pendingLi = null;
+
   // Responses (exact text comes from the spec)
   const RESPONSES = {
     meal: 'The maximum allowable expense for a meal is $75.00.',
     hotel: 'The maximum allowable expense for accommodation is $200.00 per night.',
-    submit: 'Send details and scanned receipts to expenses@contoso.com.'
+    submit: 'Send details and scanned receipts to expenses@contoso.com.',
+    flight: 'The maximum allowable expense for a flight is $600'
   };
 
   // normalize text for matching
@@ -30,6 +35,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // Hotel-related: hotel, accommodation, stay, room, lodging
     if(has(/\b(hotel|accommodation|stay|room|lodging)\b/) && has(/\b(max|maximum|allow|allowable|claim|limit|night|per night)\b/)){
       return 'hotel';
+    }
+
+    // Flight-related: flight, airfare, plane, ticket
+    if(has(/\b(flight|airfare|airline|plane|ticket)\b/) && has(/\b(max|maximum|allow|allowable|claim|limit|how much)\b/)){
+      return 'flight';
     }
 
     // Submit-related: how to submit / where to send / receipt(s)
@@ -102,10 +112,55 @@ document.addEventListener('DOMContentLoaded', ()=>{
     await typeText(bubbleText, response, 28);
   }
 
+  function addPendingSample(text){
+    // fill the input
+    input.value = text;
+
+    // if a pending preview exists, update it
+    if(pendingLi){
+      const bubble = pendingLi.querySelector('.bubble');
+      bubble.textContent = text;
+      input.focus();
+      return;
+    }
+
+    // otherwise append a preview user message
+    const bubble = appendMessage('user', '');
+    const li = bubble.parentElement;
+    li.classList.add('pending');
+    pendingLi = li;
+    bubble.textContent = text;
+    input.focus();
+  }
+
+  sampleBtns.forEach(btn => {
+    btn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      const sample = btn.dataset.sample || btn.textContent || '';
+      addPendingSample(sample);
+    });
+  });
+
+  // keep the pending preview in sync with input edits; remove if input cleared
+  input.addEventListener('input', ()=>{
+    if(!pendingLi) return;
+    const bubble = pendingLi.querySelector('.bubble');
+    if(!input.value || input.value.trim() === ''){
+      pendingLi.remove();
+      pendingLi = null;
+    } else {
+      bubble.textContent = input.value;
+    }
+  });
+
   form.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const text = input.value.trim();
     if(!text) return;
+
+    // remove pending preview (if any) to avoid duplicate
+    if(pendingLi){ pendingLi.remove(); pendingLi = null; }
+
     // add user message
     const userBubble = appendMessage('user', '');
     userBubble.textContent = text;

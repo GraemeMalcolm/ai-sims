@@ -15,6 +15,16 @@
       <ul id="messages" class="messages" role="list"></ul>
     </div>
 
+    <!-- Added: example samples learners can click to populate the input (not submit) -->
+    <div class="samples" id="samples">
+      <p class="muted">Try a sample:</p>
+      <div class="sample-list">
+        <button type="button" class="sample-btn" data-sample="What is the maximum I can claim for a meal?">What is the maximum I can claim for a meal?</button>
+        <button type="button" class="sample-btn" data-sample="What's the maximum I can claim for a hotel?">What's the maximum I can claim for a hotel?</button>
+        <button type="button" class="sample-btn" data-sample="How do I submit an expense claim?">How do I submit an expense claim?</button>
+      </div>
+    </div>
+
     <form id="chat-form" class="chat-form" autocomplete="off" aria-label="Ask a question">
       <input id="chat-input" class="chat-input" type="text" placeholder="Ask a question..." aria-label="Question" />
       <button id="send-btn" class="send-btn" type="submit">Send</button>
