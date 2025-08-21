@@ -5,5 +5,5 @@ The web page should include the following a chat pane in which the user can ente
 |Question | Response |
 | -- | --|
 | What is the maximum I can claim for a meal? | The maximum allowable expense for a meal is $75.00. |
-| What's the maximum I can claim for a hotel? | The maximum allowable expense for a meal is $200.00 per night. |
+| What's the maximum I can claim for a hotel? | The maximum allowable expense for accommodation is $200.00 per night. |
 | How do I submit an expense claim? | Send details and scanned receipts to expenses@ contoso.com. |

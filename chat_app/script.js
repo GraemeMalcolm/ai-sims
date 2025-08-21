@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // Responses (exact text comes from the spec)
   const RESPONSES = {
     meal: 'The maximum allowable expense for a meal is $75.00.',
-    hotel: 'The maximum allowable expense for a meal is $200.00 per night.',
+    hotel: 'The maximum allowable expense for accommodation is $200.00 per night.',
     submit: 'Send details and scanned receipts to expenses@ contoso.com.'
   };
 
