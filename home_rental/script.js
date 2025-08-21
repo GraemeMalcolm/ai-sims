@@ -111,18 +111,51 @@ document.addEventListener('DOMContentLoaded', ()=>{
     dataContainer.hidden = false;
   }
 
+  // Replace simple fetch with toggling behavior for the sample data link
   if(viewDataLink){
+    // keep aria state for accessibility
+    viewDataLink.setAttribute('aria-expanded','false');
+
     viewDataLink.addEventListener('click', (e)=>{
       e.preventDefault();
+      if(!dataContainer) return;
+
+      const isVisible = !dataContainer.hidden;
+      if(isVisible){
+        // hide
+        dataContainer.hidden = true;
+        viewDataLink.textContent = 'View sample rent data';
+        viewDataLink.setAttribute('aria-expanded','false');
+        return;
+      }
+
+      // show: if already loaded, just reveal
+      if(dataContainer.dataset.loaded === 'true' && dataContainer.innerHTML.trim().length > 0){
+        dataContainer.hidden = false;
+        viewDataLink.textContent = 'Hide sample rent data';
+        viewDataLink.setAttribute('aria-expanded','true');
+        return;
+      }
+
+      // otherwise fetch and render
+      const previousText = viewDataLink.textContent;
+      viewDataLink.textContent = 'Loading...';
+
       fetch('data.csv')
         .then(res => { if(!res.ok) throw new Error('Network response was not ok'); return res.text(); })
         .then(text => {
           const rows = parseCSV(text);
           renderTable(rows);
+          dataContainer.dataset.loaded = 'true';
+          viewDataLink.textContent = 'Hide sample rent data';
+          viewDataLink.setAttribute('aria-expanded','true');
         })
         .catch(err => {
           dataContainer.innerHTML = `<div class="muted">Unable to load data: ${err.message}</div>`;
           dataContainer.hidden = false;
+          dataContainer.dataset.loaded = 'true';
+          viewDataLink.textContent = 'Hide sample rent data';
+          viewDataLink.setAttribute('aria-expanded','true');
         });
     });
   }
