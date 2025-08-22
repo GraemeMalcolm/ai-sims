@@ -1,7 +1,0 @@
-Based on the details in the spec, create a web application to simulate a call analysis app in the call_analyzer folder.
-
-
-Only show the open file dialog after the user clicks Upload file. The dialog should list the .wav files that are in the calls folder.
-
-
-In the Open File dialog, display an icon for an audio file next to each filename.
