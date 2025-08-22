@@ -33,6 +33,9 @@ h1{margin:0 0 12px 0}
 .caption{margin:0}
 .muted{color:var(--muted)}
 
+/* small light text for the signed-in label */
+.signed-in{font-size:13px; color:var(--muted); margin:0 0 12px 0}
+
 .samples{margin-top:12px;display:flex;flex-direction:column;gap:8px}
 .sample-list{display:flex;gap:8px;flex-wrap:wrap}
 .sample-btn{background:#fff;border:1px solid #e6eef9;padding:8px 12px;border-radius:999px;cursor:pointer;color:var(--accent);font-size:14px}

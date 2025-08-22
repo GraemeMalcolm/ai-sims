@@ -14,8 +14,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const RESPONSES = {
     meal: 'The maximum allowable expense for a meal is $75.00.',
     hotel: 'The maximum allowable expense for accommodation is $200.00 per night.',
-    submit: 'To submit an expense claim, you can send details and amounts to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
-    flight: 'The maximum allowable expense for a flight is $600'
+    submit: 'To submit an expense claim, you can just send details and scanned receipts to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
+    flight: 'The maximum allowable expense for a flight is $600',
+    taxi: 'The maximum allowable expense for a taxi or ride-share is $50.'
   };
 
   // normalize text for matching
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   function matchIntent(text){
     const t = normalize(text);
+
     const has = (re) => re.test(t);
 
     // Meal-related: contains meal/food and a question about maximum/claim
@@ -35,6 +37,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // Hotel-related: hotel, accommodation, stay, room, lodging
     if(has(/\b(hotel|accommodation|stay|room|lodging)\b/) && has(/\b(max|maximum|allow|allowable|claim|limit|night|per night)\b/)){
       return 'hotel';
+    }
+
+    // Taxi / ride-share: taxi, cab, Uber, Lyft, ride share
+    if((has(/\b(taxi|cab|uber|lyft|rideshare)\b/) || has(/\b(ride\s+share)\b/)) && has(/\b(max|maximum|allow|allowable|claim|limit|how much)\b/)){
+      return 'taxi';
     }
 
     // Flight-related: flight, airfare, plane, ticket
