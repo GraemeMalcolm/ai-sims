@@ -1,0 +1,8 @@
+This is a specification for a web app that supports employees with voice memos left by customers with inquieries about travel. The app should be a HTML 5 web site with a single HTML file supported by a single JavaScript file for code and a single CSS file for visual themes.
+
+- An "Upload file" button that displays a simulated "Open File" interface listing the files in the media folder. This should not be a real "Open file" dialog box, but it should look like the user is uploading a local file".
+- When the user selects a voice file, the page should display it.
+- Under the displayed voice file, the page should show an AI-generated transcript from the following values:
+    - For voice-memo-1.wav: "Hi there! I’m planning a solo trip to Portugal next month and I’d love some advice. I’m into local culture and food, and I want to avoid super touristy spots. Do you have recommendations for places that are safe but still authentic? Also, any tips on getting around without renting a car?"
+    - For voice-memo-2.wav: "Hi, I’m organizing a business trip to Tokyo and I’d appreciate help with logistics. I’ll need a hotel near the Shibuya area, preferably with good Wi-Fi and meeting facilities. Also, could you advise on airport transfers and whether I should get a local SIM or pocket Wi-Fi?"
+    - For voice-memo-3.wav: "Hey there! My girlfriends and I are planning a getaway to Greece—finally! We’re thinking Santorini, but we’re open to other islands too. We want beaches, wine, and maybe a little adventure. What’s the best time to go for good weather but fewer crowds? And can you help us find a cute villa?"
