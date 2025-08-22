@@ -7,12 +7,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // Samples: buttons that populate the input and add a pending user message (not submitted)
   const sampleBtns = document.querySelectorAll('.sample-btn');
   let pendingLi = null;
+  let awaitingSubmitConfirmation = false;
+  let awaitingSubmitDetails = false;
 
   // Responses (exact text comes from the spec)
   const RESPONSES = {
     meal: 'The maximum allowable expense for a meal is $75.00.',
     hotel: 'The maximum allowable expense for accommodation is $200.00 per night.',
-    submit: 'Send details and scanned receipts to expenses@contoso.com.',
+    submit: 'To submit an expense claim, you can send details and scanned receipts to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
     flight: 'The maximum allowable expense for a flight is $600'
   };
 
@@ -21,10 +23,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     return text.toLowerCase().replace(/["'`]/g, '').replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
   }
 
-  // basic intent matching with tolerant rules
   function matchIntent(text){
     const t = normalize(text);
-
     const has = (re) => re.test(t);
 
     // Meal-related: contains meal/food and a question about maximum/claim
@@ -48,6 +48,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
 
     return null;
+  }
+
+  function isAffirmative(text){
+    const t = normalize(text);
+    return /\b(yes|y|yeah|yep|sure|ok|okay|please do|please|affirmative|go ahead|do it|alright|surely)\b/.test(t);
+  }
+
+  function isNegative(text){
+    const t = normalize(text);
+    return /\b(no|nope|nah|not|dont|do not|cancel|stop|never)\b/.test(t);
   }
 
   // create and append a message element
@@ -91,6 +101,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
     return bubble;
   }
 
+  async function sendAssistantMessage(response){
+    const typingEl = showTyping();
+    await new Promise(r => setTimeout(r, 500));
+    typingEl.remove();
+    const bubble = appendMessage('assistant', '');
+    const bubbleText = document.createElement('div');
+    bubble.appendChild(bubbleText);
+    await typeText(bubbleText, response, 28);
+  }
+
   async function respondTo(text){
     // determine intent
     const intent = matchIntent(text);
@@ -110,6 +130,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     // type the response
     await typeText(bubbleText, response, 28);
+
+    return intent;
   }
 
   function addPendingSample(text){
@@ -168,7 +190,59 @@ document.addEventListener('DOMContentLoaded', ()=>{
     input.disabled = true;
     sendBtn.disabled = true;
 
-    await respondTo(text);
+    // handle stateful submit flow
+    if(awaitingSubmitConfirmation){
+      if(isNegative(text)){
+        await sendAssistantMessage('OK. How can I help you?');
+        awaitingSubmitConfirmation = false;
+        awaitingSubmitDetails = false;
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+        return;
+      }
+      if(isAffirmative(text)){
+        await sendAssistantMessage('Please enter the details and amounts to be claimed.');
+        awaitingSubmitConfirmation = false;
+        awaitingSubmitDetails = true;
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+        return;
+      }
+      // otherwise fall through to normal handling
+    }
+
+    if(awaitingSubmitDetails){
+      if(isNegative(text)){
+        await sendAssistantMessage('OK. How can I help you?');
+        awaitingSubmitConfirmation = false;
+        awaitingSubmitDetails = false;
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.focus();
+        return;
+      }
+
+      // user provided details - send the email (simulated)
+      await sendAssistantMessage('Thanks. I\'ve sent an email to expenses@contoso.com on your behalf. You\'ll receive a confirmation email within 24 hours.');
+      awaitingSubmitConfirmation = false;
+      awaitingSubmitDetails = false;
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
+      return;
+    }
+
+    // default behaviour
+    const intent = await respondTo(text);
+
+    if(intent === 'submit'){
+      awaitingSubmitConfirmation = true;
+    } else {
+      awaitingSubmitConfirmation = false;
+      awaitingSubmitDetails = false;
+    }
 
     input.disabled = false;
     sendBtn.disabled = false;
