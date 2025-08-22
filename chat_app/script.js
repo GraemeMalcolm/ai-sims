@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const RESPONSES = {
     meal: 'The maximum allowable expense for a meal is $75.00.',
     hotel: 'The maximum allowable expense for accommodation is $200.00 per night.',
-    submit: 'To submit an expense claim, you can send details and scanned receipts to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
+    submit: 'To submit an expense claim, you can send details and amounts to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
     flight: 'The maximum allowable expense for a flight is $600'
   };
 
