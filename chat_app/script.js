@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   async function respondTo(text){
     // determine intent
     const intent = matchIntent(text);
-    const response = intent ? RESPONSES[intent] : "I'm sorry. I didn't understand your question. Please try rewording it.";
+    const response = intent ? RESPONSES[intent] : "I'm sorry. I didn't understand your question. Please try rewording it.\nNote that I can only help with questions about expenses.";
 
     // show typing indicator
     const typingEl = showTyping();
