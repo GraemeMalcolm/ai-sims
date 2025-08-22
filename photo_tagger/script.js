@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   let selectedItem = null;
   let selectedFile = null;
 
+  // Timers for analyzing and typing so we can cancel if user loads another image quickly
+  let analyzeTimeout = null;
+  let typingInterval = null;
+
   // Given an array of filenames, pick one per base name using a preferred extension order
   function pickPreferredFiles(candidates){
     const order = ['png','jpg','jpeg','webp','gif','svg'];
@@ -117,13 +121,57 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   function openSelected(){ if(selectedFile) loadFile(selectedFile); }
 
+  function clearPendingTimers(){
+    if(analyzeTimeout){ clearTimeout(analyzeTimeout); analyzeTimeout = null; }
+    if(typingInterval){ clearInterval(typingInterval); typingInterval = null; }
+    captionEl.classList.remove('typing');
+  }
+
+  function typeCaption(text, charDelay = 40){
+    captionEl.textContent = '';
+    captionEl.classList.add('typing');
+    let i = 0;
+    typingInterval = setInterval(() => {
+      captionEl.textContent += text.charAt(i);
+      i++;
+      if(i >= text.length){
+        clearInterval(typingInterval);
+        typingInterval = null;
+        captionEl.classList.remove('typing');
+      }
+    }, charDelay);
+  }
+
   function loadFile(filename){
+    // cancel any pending analyze/typing from previous image
+    clearPendingTimers();
+
+    // ensure we wait until the image is loaded before showing preview and running analysis
+    previewImg.onload = () => {
+      preview.hidden = false;
+      disclaimer.hidden = false;
+
+      // show analyzing message for 3 seconds, then type the caption
+      captionEl.classList.remove('typing');
+      captionEl.textContent = 'Analyzing image...';
+
+      analyzeTimeout = setTimeout(() => {
+        analyzeTimeout = null;
+        const base = filename.replace(/\.[^/.]+$/, '');
+        const finalCaption = captions[base] || 'No caption available';
+        typeCaption(finalCaption, 40);
+      }, 3000);
+    };
+
+    previewImg.onerror = () => {
+      clearPendingTimers();
+      preview.hidden = false;
+      disclaimer.hidden = false;
+      captionEl.textContent = 'Unable to load image';
+    };
+
     previewImg.src = `images/${filename}`;
     previewImg.alt = filename;
-    const base = filename.replace(/\.[^/.]+$/, '');
-    captionEl.textContent = captions[base] || '';
-    preview.hidden = false;
-    disclaimer.hidden = false;
     closeDialog();
   }
 

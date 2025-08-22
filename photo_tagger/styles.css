@@ -17,6 +17,20 @@ button#upload-btn{background:var(--accent); color:#fff; border:0; padding:10px 1
 .preview{margin-top:20px; display:flex; flex-direction:column; gap:12px; align-items:flex-start}
 .preview img{max-width:100%; border-radius:8px; box-shadow:0 4px 16px rgba(2,6,23,0.08)}
 .caption{background:var(--card); padding:10px 12px; border-radius:8px; box-shadow:inset 0 1px 0 rgba(0,0,0,0.02)}
+/* When caption is being typed, show a blinking caret */
+.caption.typing::after{
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
 .disclaimer{font-size:12px; margin-top:8px; color:var(--muted)}
 
 /* Dialog styles */
