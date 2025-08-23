@@ -10,11 +10,32 @@ document.addEventListener('DOMContentLoaded', ()=>{
   let awaitingSubmitConfirmation = false;
   let awaitingSubmitDetails = false;
 
+  // find the scrollable chat container and scroll to bottom
+  function getChatContainer(){
+    return messagesEl.closest('.chat') || messagesEl.parentElement || document.documentElement;
+  }
+
+  function scrollToBottom(smooth=false){
+    const container = getChatContainer();
+    if(!container) return;
+    try{
+      if(smooth && container.scrollTo){
+        container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+      } else if(container.scrollTop !== undefined){
+        container.scrollTop = container.scrollHeight;
+      } else {
+        window.scrollTo(0, container.scrollHeight);
+      }
+    }catch(e){
+      try{ container.scrollTop = container.scrollHeight; }catch(e2){}
+    }
+  }
+
   // Responses (exact text comes from the spec)
   const RESPONSES = {
     meal: 'The maximum allowable expense for a meal is $75.00.',
     hotel: 'The maximum allowable expense for accommodation is $200.00 per night.',
-    submit: 'To submit an expense claim, you can just send details and scanned receipts to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
+    submit: 'To submit an expense claim, you can just send details and the amounts to be claimed to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
     flight: 'The maximum allowable expense for a flight is $600',
     taxi: 'The maximum allowable expense for a taxi or ride-share is $50.'
   };
@@ -75,7 +96,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
     li.innerHTML = `<div class="bubble"></div>`;
     const bubble = li.querySelector('.bubble');
     messagesEl.appendChild(li);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+    // ensure newly added message is visible
+    try{
+      li.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }catch(e){
+      scrollToBottom(true);
+    }
     return bubble;
   }
 
@@ -87,7 +113,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const timer = setInterval(()=>{
         el.textContent += text.charAt(i);
         i++;
-        messagesEl.scrollTop = messagesEl.scrollHeight;
+        // make sure the growing bubble stays visible
+        scrollToBottom(false);
         if(i >= text.length){
           clearInterval(timer);
           resolve();
@@ -104,7 +131,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     typing.className = 'typing';
     typing.innerHTML = '<span></span><span></span><span></span>';
     bubble.appendChild(typing);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+    scrollToBottom(true);
     return bubble;
   }
 
@@ -142,23 +169,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 
   function addPendingSample(text){
-    // fill the input
+    // populate the input only (do not add a preview message)
     input.value = text;
-
-    // if a pending preview exists, update it
-    if(pendingLi){
-      const bubble = pendingLi.querySelector('.bubble');
-      bubble.textContent = text;
-      input.focus();
-      return;
-    }
-
-    // otherwise append a preview user message
-    const bubble = appendMessage('user', '');
-    const li = bubble.parentElement;
-    li.classList.add('pending');
-    pendingLi = li;
-    bubble.textContent = text;
     input.focus();
   }
 
