@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', ()=>{
   const captions = {
-    'image1': 'A giraffe standing in the savannah',
-    'image2': 'An elephant with large tusks',
-    'image3': 'A lion in long grass'
+    'image1': 'A giraffe standing in a field',
+    'image2': 'An elephant with tusks in a field',
+    'image3': 'A lion in a field of tall grass'
   };
 
   const uploadBtn = document.getElementById('upload-btn');
