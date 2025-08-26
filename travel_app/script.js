@@ -81,6 +81,17 @@ const infoTable = document.getElementById('infoTable');
 langToggle.onchange = function() {
     currentLang = langToggle.value;
     updateUI();
+    // Update mainTitle according to language
+    if (mainTitle) {
+        mainTitle.textContent = currentLang === 'zh'
+            ? '玛吉旅行社 - 语音备忘录分析器'
+            : "Margie's Travel - Audio Memo Analyzer";
+    }
+    // Clear infoTable contents
+    if (infoTable) {
+        infoTable.innerHTML = '';
+        infoTable.style.display = 'none';
+    }
     setTimeout(() => {
         const folderHeader = document.querySelector('.folder-header');
         if (folderHeader) {
@@ -91,6 +102,7 @@ langToggle.onchange = function() {
 
 function updateUI() {
     const t = translations[currentLang];
+    simulatedFolder.innerHTML = '';
     renderSimulatedFolder();
     if (analyzingDiv) analyzingDiv.textContent = t.analyzing;
 }
@@ -103,6 +115,7 @@ function renderSimulatedFolder() {
         '<ul class="folder-list">' +
         filteredFiles.map((memo, idx) => `<li class="folder-item"><span class="file-icon"></span><button class="file-select-btn" data-idx="${idx}">${memo.name}</button></li>`).join('') +
         '</ul></div>';
+
 }
 
 simulatedFolder.onclick = function(e) {
@@ -133,16 +146,21 @@ function showInfoTable(memo) {
         <tr><th>${t.sentiment}</th><td>${getSentimentEmoji(memo.sentiment)} ${memo.sentiment}</td></tr>
     </table>`;
     infoTable.style.display = 'block';
-    typeTranscript(memo.transcript);
+    typeTranscript(memo);
 }
 
-function typeTranscript(text) {
+function typeTranscript(memo) {
     const transcriptTd = document.getElementById('typedTranscript');
     transcriptTd.textContent = '';
+    // Set and play audio
+    if (audioPlayer) {
+        audioPlayer.src = `media/${memo.name}`;
+        audioPlayer.play();
+    }
     let i = 0;
     function type() {
-        if (i < text.length) {
-            transcriptTd.textContent += text[i];
+        if (i < memo.transcript.length) {
+            transcriptTd.textContent += memo.transcript[i];
             i++;
             setTimeout(type, 30);
         }
