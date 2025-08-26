@@ -3,30 +3,30 @@ const storyFiles = [
     {
         name: 'story-1.wav',
         transcript: "I was in Tokyo when the earthquake struck in 2011. I remember how the ground shook violently, and buildings swayed like trees in the wind. We spent the night in a shelter, unsure of what tomorrow would bring.",
-        entities: "Tokyo, earthquake, 2011, shelter, tomorrow",
+        entities: "Tokyo, earthquake, 2011, buildings, night, shelter, tomorrow",
         sentiment: "Negative",
         language: "English"
     },
     {
         name: 'story-2.wav',
         transcript: "When the Apollo 11 landing was broadcast, my mother sat with her father in their living room in São Paulo. They watched in awe as Neil Armstrong stepped onto the Moon. She said it was a moment of wonder and possibility.",
-        entities: "Apollo 11, Neil Armstrong, Moon, father, São Paulo, living room",
-        sentiment: "Positive",
+        entities: "Apollo 11 landing, mother, Neil Armstrong, Moon, father, São Paulo, living room",
+        sentiment: "Neutral",
         language: "English"
     },
     {
         name: 'story-3.wav',
         transcript: "During the famine in Gujarat, my family survived on rice and water for weeks. My father traded his watch for a sack of grain. We were hungry, but together.",
-        entities: "famine, Gujarat, family, father, watch, grain",
-        sentiment: "Neutral",
+        entities: "famine, Gujarat, rice, weeks, father, watch",
+        sentiment: "Negative",
         language: "English"
     },
     {
         name: 'story-4.wav',
         transcript: "Estaba en la Ciudad de México en 1968, viendo a Bob Beamon romper el récord mundial de salto de longitud. El estadio estalló, se sintió como si hubiéramos presenciado algo sobrehumano. Nunca olvidaré ese salto.",
         translation: "I was in Mexico City in 1968, watching Bob Beamon break the long jump world record. The stadium erupted—it felt like we had witnessed something superhuman. I’ll never forget that leap.",
-        entities: "Mexico City, 1968, Bob Beamon, long jump, world record, stadium",
-        sentiment: "Positive",
+        entities: "Mexico City, 1968, Bob Beamon, stadium, leap",
+        sentiment: "Mixed",
         language: "Spanish"
     }
 ];
@@ -159,14 +159,31 @@ function showInfoTable(file) {
                 case 'positive': sentimentEmoji = '😊'; break;
                 case 'negative': sentimentEmoji = '😞'; break;
                 case 'neutral': sentimentEmoji = '😐'; break;
+                case 'mixed': sentimentEmoji = '😶‍🌫️'; break;
                 default: sentimentEmoji = '';
+            }
+            let transcriptHtml = file.transcript;
+            let translationHtml = file.translation;
+            if (file.entities) {
+                const entities = file.entities.split(',').map(e => e.trim()).filter(e => e);
+                if ((file.language || '').toLowerCase() === 'english') {
+                    entities.forEach(entity => {
+                        const re = new RegExp(`\\b${entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+                        transcriptHtml = transcriptHtml.replace(re, '<span style="text-decoration:underline; text-decoration-color:#007bff;">$&</span>');
+                    });
+                } else if (file.translation) {
+                    entities.forEach(entity => {
+                        const re = new RegExp(`\\b${entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+                        translationHtml = translationHtml.replace(re, '<span style="text-decoration:underline; text-decoration-color:#007bff;">$&</span>');
+                    });
+                }
             }
             let tableHtml = `<table class="info-table">
                 <tr><th>Selected file</th><td>${file.name}</td></tr>
-                <tr><th>Transcript</th><td id="typedTranscript">${file.transcript}</td></tr>
+                <tr><th>Transcript</th><td id="typedTranscript">${transcriptHtml}</td></tr>
                 <tr><th>Language</th><td>${file.language || 'Unknown'}</td></tr>`;
             if (file.language && file.language.toLowerCase() !== 'english' && file.translation) {
-                tableHtml += `<tr><th>Translation</th><td>${file.translation}</td></tr>`;
+                tableHtml += `<tr><th>Translation</th><td>${translationHtml}</td></tr>`;
             }
             tableHtml += `<tr><th>Named Entities</th><td>${file.entities}</td></tr>
                 <tr><th>Sentiment</th><td>${file.sentiment} ${sentimentEmoji}</td></tr>

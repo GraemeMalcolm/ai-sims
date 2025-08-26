@@ -1,3 +1,14 @@
+ul {
+    text-align: center;
+    font-family: 'Aptos', Arial, sans-serif;
+    list-style: none;
+    color: #0a2342;
+}
+p {
+    text-align: center;
+    font-family: 'Aptos', Arial, sans-serif;
+    color: #0a2342;
+}
 body {
     font-family: Arial, sans-serif;
     background: #f6f8fb;
