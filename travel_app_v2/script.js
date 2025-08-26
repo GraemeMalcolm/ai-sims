@@ -81,27 +81,21 @@ const infoTable = document.getElementById('infoTable');
 langToggle.onchange = function() {
     currentLang = langToggle.value;
     updateUI();
-    setTimeout(() => {
-        const folderHeader = document.querySelector('.folder-header');
-        if (folderHeader) {
-            folderHeader.innerText = currentLang === 'zh' ? '媒体文件夹' : 'Media Folder';
-        }
-    }, 0);
 };
 
 function updateUI() {
     const t = translations[currentLang];
+    mainTitle.textContent = t.title;
+    folderTitle.textContent = t.folder;
     renderSimulatedFolder();
     if (analyzingDiv) analyzingDiv.textContent = t.analyzing;
 }
 
 function renderSimulatedFolder() {
     const t = translations[currentLang];
-    let prefix = currentLang === 'zh' ? 'translated' : 'voice-memo';
-    const filteredFiles = t.files.filter(memo => memo.name.startsWith(prefix));
     simulatedFolder.innerHTML = '<div class="folder-window"><div class="folder-header">' + t.folder + '</div>' +
         '<ul class="folder-list">' +
-        filteredFiles.map((memo, idx) => `<li class="folder-item"><span class="file-icon"></span><button class="file-select-btn" data-idx="${idx}">${memo.name}</button></li>`).join('') +
+        t.files.map((memo, idx) => `<li class="folder-item"><span class="file-icon"></span><button class="file-select-btn" data-idx="${idx}">${memo.name}</button></li>`).join('') +
         '</ul></div>';
 }
 

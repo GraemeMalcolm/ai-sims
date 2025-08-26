@@ -1,6 +1,6 @@
 body {
     font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
-    background: #fff8f3;
+    background: #f5f5f5;
     margin: 0;
     padding: 0;
     display: flex;
@@ -55,7 +55,6 @@ h1 {
     list-style: none;
     padding: 0 18px;
     margin: 0;
-    justify-content: center;
 }
 
 .folder-item {
