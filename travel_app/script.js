@@ -93,9 +93,11 @@ function updateUI() {
 
 function renderSimulatedFolder() {
     const t = translations[currentLang];
+    let prefix = currentLang === 'zh' ? 'translated' : 'voice-memo';
+    const filteredFiles = t.files.filter(memo => memo.name.startsWith(prefix));
     simulatedFolder.innerHTML = '<div class="folder-window"><div class="folder-header">' + t.folder + '</div>' +
         '<ul class="folder-list">' +
-        t.files.map((memo, idx) => `<li class="folder-item"><span class="file-icon"></span><button class="file-select-btn" data-idx="${idx}">${memo.name}</button></li>`).join('') +
+        filteredFiles.map((memo, idx) => `<li class="folder-item"><span class="file-icon"></span><button class="file-select-btn" data-idx="${idx}">${memo.name}</button></li>`).join('') +
         '</ul></div>';
 }
 
