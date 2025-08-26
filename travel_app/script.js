@@ -4,10 +4,10 @@ const translations = {
         folder: "Media Folder",
         analyzing: "Analyzing audio...",
         selectedFile: "Selected file",
-        transcript: "Transcript",
-        summary: "Text Summary",
-        entities: "Named Entities",
-        sentiment: "Sentiment",
+        transcript: "Transcript - AI generated",
+        summary: "Text Summary - AI generated",
+        entities: "Named Entities - AI generated",
+        sentiment: "Sentiment - AI generated",
         files: [
             {
                 name: 'voice-memo-1.wav',
@@ -37,10 +37,10 @@ const translations = {
         folder: "媒体文件夹",
         analyzing: "分析音频...",
         selectedFile: "所选文件",
-        transcript: "抄本",
-        summary: "文本摘要",
-        entities: "命名实体",
-        sentiment: "情绪",
+        transcript: "抄本 - 人工智能生成",
+        summary: "文本摘要 - 人工智能生成",
+        entities: "命名实体 - 人工智能生成",
+        sentiment: "情绪 - 人工智能生成",
         files: [
             {
                 name: 'translated-1.wav',
@@ -86,6 +86,13 @@ langToggle.onchange = function() {
         mainTitle.textContent = currentLang === 'zh'
             ? '玛吉旅行社 - 语音备忘录分析器'
             : "Margie's Travel - Audio Memo Analyzer";
+    }
+    // Update folderDescription according to language
+    const folderDescription = document.getElementById('folderDescription');
+    if (folderDescription) {
+        folderDescription.innerText = currentLang === 'zh'
+            ? "下面是留给 Margie's Travel 销售团队跟进的语音备忘录文件夹。"
+            : "Below is a folder of voice memos left for Margie's Travel's sales team to follow up on.";
     }
     // Clear infoTable contents
     if (infoTable) {
