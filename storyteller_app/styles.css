@@ -3,11 +3,13 @@ ul {
     font-family: 'Aptos', Arial, sans-serif;
     list-style: none;
     color: #0a2342;
+    font-size: 0.95rem;
 }
 p {
     text-align: center;
     font-family: 'Aptos', Arial, sans-serif;
     color: #0a2342;
+    font-size: 0.95rem;
 }
 body {
     font-family: Arial, sans-serif;
