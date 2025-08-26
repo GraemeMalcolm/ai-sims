@@ -49,8 +49,6 @@ uploadBtn.onclick = function() {
                 <span class="dialog-title" style="font-weight:bold;">Open</span>
             </div>
             <div class="dialog-toolbar">
-                <label class="lookin-label">Look in:</label>
-                <select class="lookin-dropdown"><option>stories</option></select>
             </div>
             <div class="dialog-body">
                 <ul class="dialog-list">
@@ -68,8 +66,6 @@ uploadBtn.onclick = function() {
             <div class="dialog-fields">
                 <label for="dialogFileName" class="field-label">File name:</label>
                 <input id="dialogFileName" class="field-input" type="text" readonly>
-                <label for="dialogFileType" class="field-label">Files of type:</label>
-                <select id="dialogFileType" class="field-input"><option>WAV Audio (*.wav)</option></select>
             </div>
             <div class="dialog-footer">
                 <button id="dialogOpenBtn" class="dialog-action" disabled>Open</button>

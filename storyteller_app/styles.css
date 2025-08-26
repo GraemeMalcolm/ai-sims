@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f5f5f5;
+    background: #f6f8fb;
     margin: 0;
     padding: 0;
 }
@@ -33,12 +33,24 @@ button:hover {
     background: #0056b3;
 }
 
-.audioContainer{
+.audioContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    background: #fff;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    border-radius: 12px;
+    padding: 24px 16px;
+    margin: 24px auto 24px auto;
+    min-width: 320px;
+    position: static;
 }
+
+audio {
+    display: block;
+    margin: 0 auto;
+}
+
 .file-dialog {
     background: #fff;
     border: 1px solid #ccc;
@@ -66,13 +78,6 @@ button:hover {
     height: 24px;
     background: url('data:image/svg+xml;utf8,<svg fill="%23007bff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5V8h4.5L13 3.5zM6 4h6v5a1 1 0 0 0 1 1h5v10a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>') no-repeat center center;
     margin-right: 10px;
-}
-
-.audioContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
 }
 
 .analyzing {
