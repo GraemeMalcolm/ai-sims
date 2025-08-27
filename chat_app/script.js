@@ -37,7 +37,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
     hotel: 'The maximum allowable expense for accommodation is $200.00 per night.',
     submit: 'To submit an expense claim, you can just send details and the amounts to be claimed to expenses@contoso.com. Would you like me to submit a claim on your behalf?',
     flight: 'The maximum allowable expense for a flight is $600',
-    taxi: 'The maximum allowable expense for a taxi or ride-share is $50.'
+    taxi: 'The maximum allowable expense for a taxi or ride-share is $50.',
+    greeting: 'Hi. How can I help?',
+    capabilities: 'I can help you with information and guidelines for expense claims.',
+    thanks: 'You\'re welcome. Anything else I can help with?',
+    goodbye: 'Goodbye!'
   };
 
   // normalize text for matching
@@ -49,6 +53,26 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const t = normalize(text);
 
     const has = (re) => re.test(t);
+
+    // Greeting: hello, hi, hey, good morning/afternoon/evening
+    if(has(/\b(hello|hi|hey|hiya|greetings|good\s+morning|good\s+afternoon|good\s+evening)\b/)){
+      return 'greeting';
+    }
+
+    // "What can you do?" / capabilities
+    if(has(/\bwhat (can|do)\b/) && has(/\b(you|u)\b/)){
+      return 'capabilities';
+    }
+
+    // Thanks
+    if(has(/\b(thanks|thank you|thx|ty)\b/)){
+      return 'thanks';
+    }
+
+    // Goodbye
+    if(has(/\b(goodbye|bye|see you|see ya|farewell)\b/)){
+      return 'goodbye';
+    }
 
     // Meal-related: contains meal/food and a question about maximum/claim
     if(has(/\b(meal|meals|food|lunch|dinner|snack)\b/) && has(/\b(max|maximum|allow|allowable|claim|limit|how much)\b/)){
@@ -71,7 +95,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
 
     // Submit-related: how to submit / where to send / receipt(s)
-    if((has(/\b(submit|how do i submit|how to submit|how to|where do i|send|file|process)\b/) && has(/\b(expense|claim|receipt|receipts|expense claim)\b/)) || has(/\b(expense claim|how to submit an expense)\b/)){
+    if((has(/\b(submit|how do i submit|how to submit|how to|how do i|where do i|send|file|process)\b/) && has(/\b(expense|claim|receipt|receipts|expense claim)\b/)) || has(/\b(expense claim|how to submit an expense)\b/)){
       return 'submit';
     }
 
@@ -244,7 +268,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
 
       // user provided details - send the email (simulated)
-      await sendAssistantMessage('Thanks. I\'ve sent an email to expenses@contoso.com on your behalf. You\'ll receive a confirmation email within 24 hours.');
+      await sendAssistantMessage('Thanks. I\'ve sent an email to expenses@contoso.com on your behalf. You\'ll receive a confirmation email within 24 hours. You may be asked to provide more information and/or receipts.');
       awaitingSubmitConfirmation = false;
       awaitingSubmitDetails = false;
       input.disabled = false;
