@@ -8,17 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Aptos:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>StoryBridge - Oral Histories</h1>
-    <img src="logo.png" alt="Logo" width="100" height="100" style="display:block;margin:24px auto 0 auto;" />
-    <p>A storytelling platform for sharing oral histories across cultures. Using AI to complete:
-        <ul>
-            <li>Speech to text: Transcribe spoken stories.</li>
-            <li>Language Detection: Identify the language of the storyteller.</li>
-            <li>Translation: Make stories accessible globally.</li>
-            <li>Named Entity Extraction: Highlight cultural references and historical figures.</li>
-            <li>Sentiment Analysis: Capture emotional tone of narratives.</li>
-        </ul>
-    </p>
+    <div class="top-section">
+        <h1>StoryBridge - Oral Histories</h1>
+        <img src="logo.png" alt="Logo" width="100" height="100" style="display:block;margin:24px auto 0 auto;" />
+        <div class="intro">
+            <p>A storytelling platform for sharing oral histories across cultures. Using AI to complete:</p>
+            <ul>
+                <li><strong>Speech to text</strong>: Transcribe spoken stories.</li>
+                <li><strong>Language Detection</strong>: Identify the language of the storyteller.</li>
+                <li><strong>Translation</strong>: Make stories accessible globally.</li>
+                <li><strong>Named Entity Extraction</strong>: Highlight cultural references and historical figures.</li>
+                <li><strong>Sentiment Analysis</strong>: Capture emotional tone of narratives.</li>
+            </ul>
+        </div>
+    </div>
     <div class="upload-section">
         <button id="uploadBtn">Upload File</button>
         <div id="fileDialog" class="file-dialog" style="display:none;"></div>
@@ -28,6 +31,7 @@
         <div id="analyzing" class="analyzing" style="display:none;">Analyzing audio...</div>
         <div id="infoTable" style="display:none;"></div>
     </div>
+    <div class="disclaimer">AI-generated content may contain mistakes.</div>
     <script src="script.js"></script>
 </body>
 </html>

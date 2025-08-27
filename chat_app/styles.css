@@ -42,4 +42,18 @@ h1{margin:0 0 12px 0}
 .sample-btn:hover{background:rgba(37,99,235,0.04)}
 .sample-btn:focus{outline:2px solid rgba(37,99,235,0.14)}
 
+/* small, subdued disclaimer fixed at the bottom of the page */
+.disclaimer{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:8px;
+  font-size:12px;
+  color:var(--muted);
+  text-align:center;
+  opacity:0.9;
+  pointer-events:none;
+  z-index:999;
+}
+
 @media (max-width:520px){ .container{margin:16px; padding:12px} .chat{height:360px} }
