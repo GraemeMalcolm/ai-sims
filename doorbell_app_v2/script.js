@@ -91,7 +91,8 @@ function selectImage(index) {
     isAnalyzed = false;
     
     // Display the item number
-    itemNumber.textContent = `Item ${image.item}`;
+    itemNumber.textContent = `Item: ${image.itemNumber}`;
+    // itemNumber.textContent = `Detected Objects: ${image.detectedObjects}`;
     imageInfo.style.display = 'block';
     
     // Display the larger image (original)
@@ -139,8 +140,10 @@ function analyzeImage() {
             `;
             
             // Show detected objects text
-            objectsList.textContent = image.detectedObjects;
-            detectedObjects.style.display = 'block';
+            // objectsList.textContent = image.detectedObjects;
+            // detectedObjects.style.display = 'block';
+            itemNumber.textContent = `Detected Objects: ${image.detectedObjects}`;
+            imageInfo.style.display = 'block';
             
             // Update button state
             isAnalyzed = true;
