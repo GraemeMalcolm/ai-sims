@@ -1,25 +1,25 @@
 // Image data based on spec mapping
 const images = [
     {
-        item: 1,
+        item: `09:05`,
         originalPath: "images/door-image-1.png",
         objectsPath: "images/door-image-1-objects.png",
         detectedObjects: "Two people standing on a sidewalk outside a house."
     },
     {
-        item: 2,
+        item: `10:15`,
         originalPath: "images/door-image-2.png",
         objectsPath: "images/door-image-2-objects.png",
         detectedObjects: "Person holding a box, hat, lamp, leaves, door, trees"
     },
     {
-        item: 3,
+        item: `11:30`,
         originalPath: "images/door-image-3.png",
         objectsPath: "images/door-image-3-objects.png",
         detectedObjects: "A woman wearing a straw hat and kneeling on a brick patio, plants, shovel, leaves"
     },
     {
-        item: 4,
+        item: `15:45`,
         originalPath: "images/door-image-4.png",
         objectsPath: "images/door-image-4-objects.png",
         detectedObjects: "Two dogs sitting on a porch, plant, patio, garage,tree, bush"
@@ -58,7 +58,7 @@ function loadThumbnails() {
         
         thumbnailItem.innerHTML = `
             <img src="${image.originalPath}" alt="Door Image ${image.item}" class="thumbnail-image">
-            <div class="thumbnail-label">Item ${image.item}</div>
+            <div class="thumbnail-label">TimeStamp ${image.item}</div>
         `;
         
         thumbnailItem.addEventListener('click', () => selectImage(index));
