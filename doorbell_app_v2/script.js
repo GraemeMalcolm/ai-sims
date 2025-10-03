@@ -4,25 +4,25 @@ const images = [
         item: `09:05`,
         originalPath: "images/door-image-1.png",
         objectsPath: "images/door-image-1-objects.png",
-        detectedObjects: "Two people standing on a sidewalk outside a house."
+        detectedObjects: "Two people"
     },
     {
         item: `10:15`,
         originalPath: "images/door-image-2.png",
         objectsPath: "images/door-image-2-objects.png",
-        detectedObjects: "Person holding a box, hat, lamp, leaves, door, trees"
+        detectedObjects: "One person"
     },
     {
         item: `11:30`,
         originalPath: "images/door-image-3.png",
         objectsPath: "images/door-image-3-objects.png",
-        detectedObjects: "A woman wearing a straw hat and kneeling on a brick patio, plants, shovel, leaves"
+        detectedObjects: "One person"
     },
     {
         item: `15:45`,
         originalPath: "images/door-image-4.png",
         objectsPath: "images/door-image-4-objects.png",
-        detectedObjects: "Two dogs sitting on a porch, plant, patio, garage,tree, bush"
+        detectedObjects: "Two dogs"
     }
 ];
 
@@ -87,32 +87,38 @@ function selectImage(index) {
     
     const image = images[index];
     
-    // Reset to original image state
-    isAnalyzed = false;
-    
-    // Display the item number
-    itemNumber.textContent = ` `;
-    imageInfo.style.display = 'block';
-    
-    // Display the larger image (original)
-    imageDisplay.innerHTML = `
-        <img src="${image.originalPath}" alt="Door Image ${image.item} - Large View" class="main-image">
-    `;
-    
     // Clear any pending analysis timeout
     if (analysisTimeout) {
         clearTimeout(analysisTimeout);
         analysisTimeout = null;
     }
     
-    // Reset the analyze button to initial state
-    analyzeButton.disabled = false;
-    analyzeButton.textContent = 'Analyze Image';
+    // Hide the analyze button since analysis will happen automatically
+    buttonContainer.style.display = 'none';
+    detectedObjects.style.display = 'none';
+    imageInfo.style.display = 'none';
     
-    // Show the analyze button and update status
-    buttonContainer.style.display = 'block';
-    detectedObjects.style.display = 'none'; // Hide detected objects for new selection
-    updateImageStatus();
+    // Show analyzing message immediately
+    imageDisplay.innerHTML = `
+        <div class="analyzing-message-inline">
+            <div class="spinner"></div>
+            <p>Analyzing image...</p>
+        </div>
+    `;
+    
+    // After 2 seconds, show the objects image and detected objects
+    analysisTimeout = setTimeout(() => {
+        // Switch to objects image
+        imageDisplay.innerHTML = `
+            <img src="${image.objectsPath}" alt="Door Image ${image.item} - Objects Detected" class="main-image">
+        `;
+        
+        // Show detected objects text
+        itemNumber.textContent = `What's in the photo: ${image.detectedObjects}`;
+        imageInfo.style.display = 'block';
+        
+        analysisTimeout = null;
+    }, 2000);
 }
 
 // Analyze the selected image
