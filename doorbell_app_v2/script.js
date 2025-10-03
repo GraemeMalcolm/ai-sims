@@ -1,12 +1,6 @@
 // Image data based on spec mapping
 const images = [
     {
-        item: `09:05`,
-        originalPath: "images/door-image-1.png",
-        objectsPath: "images/door-image-1-objects.png",
-        detectedObjects: "Two people"
-    },
-    {
         item: `10:15`,
         originalPath: "images/door-image-2.png",
         objectsPath: "images/door-image-2-objects.png",
