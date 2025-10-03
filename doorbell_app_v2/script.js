@@ -4,25 +4,25 @@ const images = [
         item: 1,
         originalPath: "images/door-image-1.png",
         objectsPath: "images/door-image-1-objects.png",
-        detectedObjects: "Item 1 objects"
+        detectedObjects: "Two people standing on a sidewalk outside a house."
     },
     {
         item: 2,
         originalPath: "images/door-image-2.png",
         objectsPath: "images/door-image-2-objects.png",
-        detectedObjects: "Item 2 objects"
+        detectedObjects: "Person holding a box, hat, lamp, leaves, door, trees"
     },
     {
         item: 3,
         originalPath: "images/door-image-3.png",
         objectsPath: "images/door-image-3-objects.png",
-        detectedObjects: "Item 3 objects"
+        detectedObjects: "A woman wearing a straw hat and kneeling on a brick patio, plants, shovel, leaves"
     },
     {
         item: 4,
         originalPath: "images/door-image-4.png",
         objectsPath: "images/door-image-4-objects.png",
-        detectedObjects: "Item 4 objects"
+        detectedObjects: "Two dogs sitting on a porch, plant, patio, garage,tree, bush"
     }
 ];
 
@@ -91,8 +91,7 @@ function selectImage(index) {
     isAnalyzed = false;
     
     // Display the item number
-    itemNumber.textContent = `Item: ${image.itemNumber}`;
-    // itemNumber.textContent = `Detected Objects: ${image.detectedObjects}`;
+    itemNumber.textContent = ` `;
     imageInfo.style.display = 'block';
     
     // Display the larger image (original)
@@ -105,6 +104,10 @@ function selectImage(index) {
         clearTimeout(analysisTimeout);
         analysisTimeout = null;
     }
+    
+    // Reset the analyze button to initial state
+    analyzeButton.disabled = false;
+    analyzeButton.textContent = 'Analyze Image';
     
     // Show the analyze button and update status
     buttonContainer.style.display = 'block';
@@ -142,7 +145,7 @@ function analyzeImage() {
             // Show detected objects text
             // objectsList.textContent = image.detectedObjects;
             // detectedObjects.style.display = 'block';
-            itemNumber.textContent = `Detected Objects: ${image.detectedObjects}`;
+            itemNumber.textContent = `What's in the photo: ${image.detectedObjects}`;
             imageInfo.style.display = 'block';
             
             // Update button state
